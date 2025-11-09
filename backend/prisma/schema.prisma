@@ -1,0 +1,68 @@
+// backend/prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model CommodityPrice {
+  id             Int      @id @default(autoincrement())
+  commodityType  String   // e.g., 'gold', 'silver'
+  purity         String?  // '24K', '999'
+  pricePerGram   Float
+  pricePer10Gram Float?
+  currency       String   @default("INR")
+  source         String   // 'zerodha', etc
+  timestamp      DateTime @default(now())
+  createdAt      DateTime @default(now())
+}
+
+model Retailer {
+  id               Int      @id @default(autoincrement())
+  name             String
+  location         String?
+  websiteUrl       String?
+  scrapingConfig   Json?
+  isActive         Boolean  @default(true)
+  lastScrapedAt    DateTime?
+  createdAt        DateTime @default(now())
+  retailerPrices   RetailerPrice[]
+}
+
+model RetailerPrice {
+  id            Int      @id @default(autoincrement())
+  retailer      Retailer @relation(fields: [retailerId], references: [id])
+  retailerId    Int
+  commodityType String
+  purity        String?
+  pricePerGram  Float
+  makingCharges Float?
+  gstPercentage Float?
+  finalPrice    Float
+  timestamp     DateTime @default(now())
+  createdAt     DateTime @default(now())
+}
+
+model SystemLog {
+  id        Int      @id @default(autoincrement())
+  logType   String
+  severity  String
+  message   String
+  metadata  Json?
+  createdAt DateTime @default(now())
+}
+
+model RetailerGoldRate {
+  id           Int      @id @default(autoincrement())
+  vendor       String
+  city         String
+  pricePerGram Float
+  purity       String
+  currency     String   @default("INR")
+  timestamp    DateTime @default(now())
+  note         String?
+}

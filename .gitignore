@@ -1,0 +1,31 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-lock.yaml
+package-lock.json
+
+# Env
+.env
+.env.*
+
+# Build output
+dist/
+build/
+.next/
+
+# OS
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Prisma client
+node_modules/.prisma
+
+# VS Code
+.vscode/
+
+# Misc
+coverage/
