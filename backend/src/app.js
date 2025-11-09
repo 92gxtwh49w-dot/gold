@@ -13,9 +13,8 @@ const app = express();
 
 // Security middlewares
 app.use(helmet());
-app.use(cors({
-  origin: process.env.ALLOWED_ORIGIN || 'http://localhost:3000'
-}));
+// Allow all origins in development
+app.use(cors());
 
 // API rate limiter
 app.use(rateLimit({
